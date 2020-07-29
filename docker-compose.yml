@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  web:
+    image: elixir:1.10.4-alpine
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - mix_data:/root/.mix
+    ports:
+      - 4000:4000
+    command: mix phx.server
+    depends_on:
+      - db
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_HOST=db
+
+volumes:
+  mix_data:
+  db_data:
